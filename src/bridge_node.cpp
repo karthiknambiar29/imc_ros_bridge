@@ -94,8 +94,8 @@ int main(int argc, char** argv)
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
     auto heartbeat_callback = [&](const ros::TimerEvent&) { imc_handle.publish_heartbeat(); };
 
-    ros::Timer announce_timer = ros_node.createTimer(ros::Duration(10.), announce_callback);
-    ros::Timer heartbeat_timer = ros_node.createTimer(ros::Duration(1.), heartbeat_callback);
+    // ros::Timer announce_timer = ros_node.createTimer(ros::Duration(10.), announce_callback);
+    // ros::Timer heartbeat_timer = ros_node.createTimer(ros::Duration(1.), heartbeat_callback);
 
     ros::spin();
 
