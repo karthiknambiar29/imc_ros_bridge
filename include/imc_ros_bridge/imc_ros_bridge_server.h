@@ -80,20 +80,18 @@ public:
     BridgeServer(IMCHandle& imc_handle, ros::NodeHandle& ros_node, const std::string& ros_topic)
     {
         ros_pub = ros_node.advertise<ROS_MSG>(ros_topic, 10);
-        std::cout << ros_topic << std::endl;
         imc_handle.tcp_subscribe(IMC_MSG::getIdStatic(), std::bind(&BridgeServer::conversion_callback, this, std::placeholders::_1));
     }
 
     void conversion_callback(const IMC::Message* imc_msg) const
     {
-        std::cout << imc_msg->getName() << std::endl;
         ROS_MSG ros_msg;
         bool success = convert(static_cast<const IMC_MSG&>(*imc_msg), ros_msg);
         if (success) {
             ros_pub.publish(ros_msg);
         }
         else {
-            ROS_INFO("There was an error trying to convert imc type %s", imc_msg->getName());
+            ROS_WARN("There was an error trying to convert imc type %s", imc_msg->getName());
         }
     }
 

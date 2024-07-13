@@ -55,10 +55,8 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
 {
     uint16_t uid = msg->getId();
     if (callbacks.count(uid) > 0) {
-		// 150 is a heartbeat and we dont really care about it. just debug it.
-		// 556 is PlanDB, i _think_ its the planDB succss, meaning "i understood that you got my plan"
-		// neptus basically spams this so im excluding it!
-		if(uid == 150 || uid == 556){
+	// 150 is a heartbeat and we dont really care about it. just debug it.
+		if(uid == 150){
 			ROS_DEBUG("Got callback with id: %u", uid);
 		}else{
 			ROS_INFO("Got callback with id: %u", uid);
@@ -67,13 +65,13 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
     }
     else {
         ROS_INFO("Got tcp message with no configure callback, msgid: %u!", uid);
-    }
 	// lets just print the whole message in json format if we can't parse it yet.
 	std::cout << "Message name: " << msg->getName() << std::endl << "Message JSON:" << std::endl;
 	// (ostream, indent)
 	msg->fieldsToJSON(std::cout, 4);
 	std::cout << std::endl;
     std::cout << "---------------------" << std::endl;
+    }
 }
 
 void IMCHandle::announce()

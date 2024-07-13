@@ -91,7 +91,7 @@ void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
     std::string message;
     for (int multicast_port : announce_ports)
     {
-		std::cout << "Writing to port: " << multicast_port << std::endl;
+		// std::cout << "Writing to port: " << multicast_port << std::endl;
         udp::endpoint destination(address::from_string(multicast_addr), multicast_port);
         multicast_socket.async_send_to(boost::asio::buffer(out_buffer_, rv), destination, handler);
     }
@@ -114,15 +114,15 @@ void UDPLink::handle_receive(const boost::system::error_code& error, size_t byte
         return;
     }
 
-    // std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.end()) << "' (" << error.message() << ") ";
+    // std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.begin()+bytes_transferred) << "' (" << error.message() << ") ";
     // std::cout << bytes_transferred << " bytes transferred" << std::endl;
 
     // attempt to read the datagram header. bytes 18-19 have size info.
-    char buf[2];
-    buf[0] = recv_buffer[18];
-    buf[1] = recv_buffer[19];
-    unsigned int num_bytes = buf[0] | buf[1] << 8;
-    std::cout << "(" << num_bytes << ") bytes should have been received according to UDP header." << std::endl;
+//    char buf[2];
+//   buf[0] = recv_buffer[18];
+//    buf[1] = recv_buffer[19];
+//    unsigned int num_bytes = buf[0] | buf[1] << 8;
+//    std::cout << "(" << num_bytes << ") bytes should have been received according to UDP header." << std::endl;
     // it seems like the socket does not return the whole package (as evidenced by bytes_transferred being smaller than what wireshark captures).
     // so we are only receiving the payload here.
 
